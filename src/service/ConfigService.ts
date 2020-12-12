@@ -224,7 +224,13 @@ export enum ShapeType {
    * Assumes that node width & height are equal
    * and the radius is equal to half of each of them
    */
-  CIRCLE = 'Circle'
+  CIRCLE = 'Circle',
+
+  /**
+   * Denotes a rectangle shaped node.
+   */
+  RECTANGLE = 'Rectangle'
+
 }
 
 export const Shape = {

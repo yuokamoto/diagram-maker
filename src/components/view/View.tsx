@@ -156,6 +156,27 @@ const getBoundaryCoordinatesForCircle = (
   };
 };
 
+const getBoundaryCoordinatesForRectangle = (
+  sourcePosition: Position,
+  sourceSize: Size,
+  destinationPosition: Position
+): Position => {
+  const distance = getDistance(sourcePosition, destinationPosition);
+  if (distance === 0) {
+    return sourcePosition;
+  }
+  const { x: x1, y: y1 } = sourcePosition;
+  const { x: x2, y: y2 } = destinationPosition;
+  const m = Math.sqrt(sourceSize.width * sourceSize.width + sourceSize.height * sourceSize.height) * 0.5;
+  const n = distance - m;
+  const x = ((m * x2) + (n * x1)) / distance;
+  const y = ((m * y2) + (n * y1)) / distance;
+  return {
+    x: Math.min(Math.max(x, -sourceSize.width * 0.5 + x1), sourceSize.width * 0.5 + x1),
+    y: Math.min(Math.max(y, -sourceSize.height * 0.5 + y1), sourceSize.height * 0.5 + y1)
+  };
+};
+
 const getBoundaryCoordinates = (
   sourcePosition: Position,
   sourceShape: ShapeType | undefined,
@@ -165,6 +186,8 @@ const getBoundaryCoordinates = (
   switch (sourceShape) {
     case Shape.CIRCLE:
       return getBoundaryCoordinatesForCircle(sourcePosition, sourceSize, destPosition);
+    case Shape.RECTANGLE:
+      return getBoundaryCoordinatesForRectangle(sourcePosition, sourceSize, destPosition);
   }
   return sourcePosition;
 };
